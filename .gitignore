@@ -1,4 +1,4 @@
 .DS_Store
 desktop.ini
 *.class
-target
+*/target
