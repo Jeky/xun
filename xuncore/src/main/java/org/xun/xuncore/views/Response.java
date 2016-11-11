@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +18,7 @@ public class Response {
         this.response = response;
     }
 
-    public void renderHtml(String html) {
+    public void renderString(String html) {
         try {
             response.setContentType("text/html;charset=UTF-8");
             response.getWriter().print(html);
@@ -39,15 +38,6 @@ public class Response {
         }
     }
 
-    public void renderJsp(Object o, String path) {
-        try {
-            response.setContentType("application/json;charset=UTF-8");
-            request.setAttribute("model", o);
-            request.getServletContext().getRequestDispatcher(path).forward(request, response);
-        } catch (IOException | ServletException ex) {
-            Logger.getLogger(Response.class.getName()).log(Level.SEVERE, "Error when rendering JSP (" + path + ")", ex);
-        }
-    }
     private final HttpServletRequest request;
     private final HttpServletResponse response;
 

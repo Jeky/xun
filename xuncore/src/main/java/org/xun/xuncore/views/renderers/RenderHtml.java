@@ -8,7 +8,7 @@ import org.xun.xuncore.reflect.Decorating;
  *
  * @author Jeky
  */
-@Decorating({StringRenderer.class})
+@Decorating({HtmlRenderer.class})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RenderHtml {
 

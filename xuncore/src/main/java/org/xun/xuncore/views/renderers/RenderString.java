@@ -8,9 +8,8 @@ import org.xun.xuncore.reflect.Decorating;
  *
  * @author Jeky
  */
-@Decorating({JspRenderer.class})
+@Decorating({StringRenderer.class})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RenderJSP {
+public @interface RenderString {
 
-    String value();
 }

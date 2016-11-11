@@ -50,12 +50,6 @@ public class Dispatcher implements Filter {
         HttpServletResponse response = (HttpServletResponse) originalResponse;
 
         String uri = request.getRequestURI();
-        if (uri.endsWith(".jsp") || uri.endsWith(".html")) {
-            System.out.println("handling static resouces:" + uri);
-            chain.doFilter(originalRequest, originalResponse);
-            return;
-        }
-
         if (uri.charAt(0) == '/') {
             uri = uri.substring(1);
         }

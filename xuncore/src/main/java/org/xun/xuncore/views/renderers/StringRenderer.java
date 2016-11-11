@@ -9,7 +9,7 @@ public class StringRenderer extends Renderer{
 
     @Override
     public void render(Object result) {
-        response.renderHtml(result.toString());
+        response.renderString(result.toString());
     }
     
 }

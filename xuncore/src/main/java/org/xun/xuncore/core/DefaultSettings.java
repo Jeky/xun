@@ -2,11 +2,9 @@ package org.xun.xuncore.core;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
-import com.google.common.reflect.TypeToken;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.xun.xuncore.reflect.ClassHandler;
 
 /**
@@ -17,14 +15,23 @@ import org.xun.xuncore.reflect.ClassHandler;
 public class DefaultSettings {
 
     public static final String PORT = "PORT";
+    public static final String TEMPLATE_PATH = "TEMPLATE_PATH";
+    public static final String STATIC_PATH = "STATIC_PATH";
+    public static final String STATIC_URL = "static";
 
     public static final int DEFAULT_PORT = 8000;
+    public static final String DEFAULT_TEMPLATE_PATH = "template";
+    public static final String DEFAULT_STATIC_PATH = "static";
+    public static final String DEFAULT_STATIC_URL = "static";
 
     public DefaultSettings() {
         classHandlers = new LinkedList<>();
         settings = new HashMap<>();
 
         settings.put(PORT, DEFAULT_PORT);
+        settings.put(TEMPLATE_PATH, DEFAULT_TEMPLATE_PATH);
+        settings.put(STATIC_PATH, DEFAULT_STATIC_PATH);
+        settings.put(STATIC_URL, DEFAULT_STATIC_URL);
 
         initClassHandlers(classHandlers);
         initSettings(settings);
@@ -54,7 +61,6 @@ public class DefaultSettings {
         } catch (java.lang.NoClassDefFoundError e) {
         }
 
-        System.out.println(classHandlers);
     }
 
     protected void initClassHandlers(List<ClassHandler> classHandlers) {
@@ -63,6 +69,10 @@ public class DefaultSettings {
     protected void initSettings(Map<String, Object> settings) {
     }
 
+    public final String getBaseDir(){
+        return Paths.get(".").toAbsolutePath().normalize().toString();
+    }
+    
     public void addClassHandler(ClassHandler handler) {
         classHandlers.add(handler);
     }
@@ -138,55 +148,6 @@ public class DefaultSettings {
     }
 
     private static DefaultSettings SETTINGS;
-
-//
-//    public static DefaultSettings getSettings() {
-//        return SettingsHolder.INSTANCE;
-//    }
-//
-//    private DefaultSettings() {
-//        classHandlers = new LinkedList<>();
-//
-//        views = new HashMap<>();
-//        classHandlers.add(new ViewHandler(views));
-//
-//        parameterConverters = new HashMap<>();
-//        classHandlers.add(new ConverterHandler(parameterConverters));
-////
-////        templateFilters = new HashMap<>();
-////        classHandlers.add(new TemplateFilterHandler(templateFilters));
-////
-////        templateTags = new HashMap<>();
-////        classHandlers.add(new TemplateTagHandler(templateTags));
-//    }
-//
-//    public Set<Entry<Pattern, List<BeanMethod>>> allViews() {
-//        return views.entrySet();
-//    }
-//    public Set<Entry<String, TemplateFilter>> allFilters() {
-//        return templateFilters.entrySet();
-//    }
-//    public ParameterConverter getConverter(Class c) {
-//        return parameterConverters.get(c);
-//    }
-//
-//    public TemplateFilter getTemplateFilter(String name) {
-//        return templateFilters.get(name);
-//    }
-//
-//    public TemplateTag getTemplateTag(String name) {
-//        return templateTags.get(name);
-//    }
-//
-//    private static class SettingsHolder {
-//
-//        private static final DefaultSettings INSTANCE = new DefaultSettings();
-//    }
-//
-//    private final Map<Pattern, List<BeanMethod>> views;
-//    private final Map<Class, ParameterConverter> parameterConverters;
-//    private final Map<String, TemplateFilter> templateFilters;
-//    private final Map<String, TemplateTag> templateTags;
     private final List<ClassHandler> classHandlers;
     private final Map<String, Object> settings;
 

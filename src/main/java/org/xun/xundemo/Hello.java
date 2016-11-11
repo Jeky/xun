@@ -1,9 +1,7 @@
 
 package org.xun.xundemo;
 
-import org.xun.xuncore.views.Request;
-import org.xun.xuncore.views.Response;
-import org.xun.xuncore.views.View;
+import org.xun.xuncore.views.*;
 
 
 /**
@@ -12,9 +10,10 @@ import org.xun.xuncore.views.View;
  */
 public class Hello {
 
+    @View(urlPattern = "^$")
     @View(urlPattern = "^hello$")
     public void hello(Request req, Response res) {
-        res.renderString("<h1>Hello!</h1>");
+        res.renderHtml("<h1>Hello!</h1>");
     }
 
 }
