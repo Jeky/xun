@@ -3,3 +3,4 @@ desktop.ini
 *.class
 */target
 lib
+*.xml
