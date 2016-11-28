@@ -1,5 +1,7 @@
 package org.xun.xuncore.classhandlers;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,21 +37,43 @@ public class ViewHandler implements ClassHandler {
 
     @Override
     public void handleClass(Class c) throws SettingsException {
-        BeanClass<?> obj = new BeanClass(c);
-        try {
-            for (BeanMethod m : obj.getMethods()) {
-                List<View> viewList = m.getAnnotationList(View.class);
-                for (View v : viewList) {
-                    Pattern p = Pattern.compile(v.urlPattern());
-                    if (!views.containsKey(p)) {
-                        views.put(p, new LinkedList<>());
+        if (c.getName().startsWith("org.xun")) {
+            try {
+                for (Method m : c.getDeclaredMethods()) {
+                    for (Annotation a : m.getAnnotations()) {
+                        System.out.println("Find annotation on " + m + ": " + a);
+                        if (a.annotationType().equals(View.class)) {
+                            View v = (View) a;
+                            Pattern p = Pattern.compile(v.urlPattern());
+                            if (!views.containsKey(p)) {
+                                views.put(p, new LinkedList<>());
+                            }
+                            views.get(p).add(new BeanMethod(new BeanClass(c), m));
+                        }
                     }
-
-                    views.get(p).add(m);
                 }
+            } catch (Exception e) {
+                System.out.println(e);
             }
-        } catch (Exception e) {
-        } 
+        }
+//        BeanClass<?> obj = new BeanClass(c);
+//        try {
+//            for (BeanMethod m : obj.getMethods()) {
+//                List<View> viewList = m.getAnnotationList(View.class);
+//                for (View v : viewList) {
+//                    System.out.println("checking method: " + m);
+//                    System.out.println(v);
+//                    Pattern p = Pattern.compile(v.urlPattern());
+//                    if (!views.containsKey(p)) {
+//                        views.put(p, new LinkedList<>());
+//                    }
+//
+//                    views.get(p).add(m);
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        } 
     }
 
     private Map<Pattern, List<BeanMethod>> views;

@@ -21,6 +21,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.xun.xuncore.classhandlers.ViewHandler;
 import org.xun.xuncore.views.Request;
 import org.xun.xuncore.views.Response;
 import org.xun.xuncore.views.converters.ParameterConverter;
@@ -54,10 +55,12 @@ public class Dispatcher implements Filter {
             uri = uri.substring(1);
         }
 
-        Map<Pattern, List<BeanMethod>> views = (Map<Pattern, List<BeanMethod>>) DefaultSettings.getSettings().getSettingValue("VIEWS");
+        Map<Pattern, List<BeanMethod>> views = (Map<Pattern, List<BeanMethod>>) DefaultSettings.getSettings().getSettingValue(ViewHandler.VIEWS);
+        System.out.println(views);
         for (Map.Entry<Pattern, List<BeanMethod>> e : views.entrySet()) {
             Matcher urlMatcher = e.getKey().matcher(uri);
             if (urlMatcher.matches()) {
+                System.out.println("found match: " + e);
                 // fetch url parameters
                 Set<String> urlArgNames = new HashSet<>();
                 try {
@@ -82,6 +85,7 @@ public class Dispatcher implements Filter {
                 try {
                     for (BeanMethod m : e.getValue()) {
                         if (m.matchArgTypes(Request.class, Response.class)) { // try to find func(req, res)
+                            logger.log(Level.INFO, "Visiting: " + m);
                             m.invoke(vars, req, res);
                             return;
                         } else if (m.matchArgNames(parameters.keySet())) { // try invoke plain bean
@@ -99,7 +103,7 @@ public class Dispatcher implements Filter {
                                 args[i] = argValue;
                                 i++;
                             }
-
+                            logger.log(Level.INFO, "Visiting: " + m);
                             m.invoke(vars, args);
                             return;
                         }

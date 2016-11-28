@@ -1,5 +1,6 @@
 package org.xun.xundemo;
 
+import org.xun.xuncore.core.DefaultSettings;
 import org.xun.xuncore.core.XunServer;
 
 /**
@@ -9,7 +10,8 @@ import org.xun.xuncore.core.XunServer;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(System.getProperty("user.dir"));
+        DefaultSettings settings = DefaultSettings.getSettings();
+        System.out.println(settings.getSettingValue("VIEWS"));
         XunServer.main(args);
     }
 }

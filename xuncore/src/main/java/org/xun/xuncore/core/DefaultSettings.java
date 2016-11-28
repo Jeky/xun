@@ -5,6 +5,8 @@ import com.google.common.reflect.ClassPath;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.xun.xuncore.reflect.ClassHandler;
 
 /**
@@ -41,6 +43,7 @@ public class DefaultSettings {
         // discover all class handlers
         for (Class c : classes) {
             if (ClassHandler.class.isAssignableFrom(c) && !c.equals(ClassHandler.class)) {
+                LOGGER.log(Level.INFO, "Class Handlers: " + c);
                 try {
                     classHandlers.add((ClassHandler) c.newInstance());
                 } catch (InstantiationException | IllegalAccessException ex) {
@@ -60,7 +63,6 @@ public class DefaultSettings {
             }
         } catch (java.lang.NoClassDefFoundError e) {
         }
-
     }
 
     protected void initClassHandlers(List<ClassHandler> classHandlers) {
@@ -69,10 +71,10 @@ public class DefaultSettings {
     protected void initSettings(Map<String, Object> settings) {
     }
 
-    public final String getBaseDir(){
+    public final String getBaseDir() {
         return Paths.get(".").toAbsolutePath().normalize().toString();
     }
-    
+
     public void addClassHandler(ClassHandler handler) {
         classHandlers.add(handler);
     }
@@ -148,7 +150,7 @@ public class DefaultSettings {
     }
 
     private static DefaultSettings SETTINGS;
-    private final List<ClassHandler> classHandlers;
+    public final List<ClassHandler> classHandlers;
     private final Map<String, Object> settings;
-
+    private static final Logger LOGGER = Logger.getLogger(DefaultSettings.class.getName());
 }

@@ -31,7 +31,7 @@ public class XunServer {
 
         // handler static resources
         ResourceHandler resourceHandler = new ResourceHandler();
-        resourceHandler.setDirectoriesListed(true);
+        resourceHandler.setDirectoriesListed(false);
         resourceHandler.setResourceBase(settings.getSettingValue(DefaultSettings.STATIC_PATH, String.class));
         ContextHandler staticURLHandler = new ContextHandler("/" + settings.getSettingValue(DefaultSettings.STATIC_URL, String.class));
         staticURLHandler.setHandler(resourceHandler);
