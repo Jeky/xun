@@ -18,7 +18,6 @@ public class BeanMethod {
 
         initArgNames();
         initDecorators();
-
     }
 
     public Object invoke(LocalVariables vars, Object... args) {
